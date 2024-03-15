@@ -1,0 +1,13 @@
+// css reset
+* {
+  all: unset; 
+  display: revert;
+}
+
+*, *::before, *::after{ 
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #EBEEF3;
+}
