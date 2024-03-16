@@ -1,0 +1,29 @@
+.layout {
+  height: 80px;
+  min-width: 1200px;
+  width: 100%;
+  background-color: white;
+  font-family: "Inter UI";
+  font-size: 18px;
+}
+ 
+.button {
+  float: right;
+  height: 50px;
+  width: 110px;
+  margin-top: 15px;
+  text-align: center;
+
+  &:nth-child(2) {
+    margin-right: 25px;
+    color: greenyellow;
+    border: 2px solid greenyellow;
+    border-radius: 5px;
+  }
+}
+
+.logo {
+  height: 100%;
+  margin: auto;
+  margin-left: 25px;
+}

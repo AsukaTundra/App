@@ -1,23 +1,25 @@
-import List from "../components/list";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-import "../assets/fonts/fonts.css";
-import style from "./app.module.scss";
+import Header from "../layout";
+import List from "../pages/list";
+import Article from "../pages/article";
+import SignUp from "../pages/signUp";
 
-export default function App() {
+import "../assets/fonts/index.css";
+
+const App: React.FC = () => {
   return (
     <>
-      <header className={style.header}>
-        <button className={style.title}>
-          <p>Realworld Blog</p>
-        </button>
-        <button className={style.button}>
-          <p>Sign In</p>
-        </button>
-        <button className={style.button}>
-          <p>Sign Up</p>
-        </button>
-      </header>
-      <List />
+      <Routes>
+        <Route path="/" element={<Header />}>
+          <Route index element={<List />} />
+          <Route path="article/:slug" element={<Article />} />
+          <Route path="sign-up" element={<SignUp />} />
+        </Route>
+      </Routes>
     </>
   );
-}
+};
+
+export default App;

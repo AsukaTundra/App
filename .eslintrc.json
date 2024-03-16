@@ -19,7 +19,7 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./app-ts/tsconfig.json"],
+    "project": ["./tsconfig.json"],
     "ecmaFeatures": {
       "jsx": true
     },
@@ -41,6 +41,8 @@
     // "react/react-in-jsx-scope": "off",
     // "react/prop-types": 0,
     // "jsx-a11y/label-has-associated-control": 0,
+    "eslint-plugin-import/no-unresolved": "off",
+    "eslint-plugin-import/extensions": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
     "react/forbid-prop-types": [
       "error",
