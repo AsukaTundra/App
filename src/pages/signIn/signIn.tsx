@@ -2,17 +2,17 @@ import React from "react";
 
 import Account from "../../components/account";
 import type { FuncRequestForm } from "../../types";
-import { registerUser } from "../../store/blogSlice";
+import { loginUser } from "../../store/blogSlice";
 import { useAppDispatch } from "../../hooks";
 
-const SignUp: React.FC = () => {
+const SignIn: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const requestForm: FuncRequestForm = (form) => {
-    dispatch(registerUser(form));
+    dispatch(loginUser(form));
   };
 
-  return <Account funcRequest={requestForm} signUp={true} />;
+  return <Account funcRequest={requestForm} signIn={true} />;
 };
 
-export default SignUp;
+export default SignIn;

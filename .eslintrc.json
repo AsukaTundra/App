@@ -35,14 +35,14 @@
     "react-hooks"
   ],
   "rules": {
-    "indent": ["error", 2],
+    "indent": 0,
+    "eslint-plugin-import/no-unresolved": 0,
+    "eslint-plugin-import/extensions": 0,
     // "linebreak-style": [0, "unix"],
     "quotes": ["error", "double"],
     // "react/react-in-jsx-scope": "off",
     // "react/prop-types": 0,
     // "jsx-a11y/label-has-associated-control": 0,
-    "eslint-plugin-import/no-unresolved": "off",
-    "eslint-plugin-import/extensions": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
     "react/forbid-prop-types": [
       "error",

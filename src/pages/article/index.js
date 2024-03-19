@@ -1,3 +1,3 @@
-import Article from "./article";
+import ArticlePage from "./article.tsx";
 
-export default Article;
+export default ArticlePage;
