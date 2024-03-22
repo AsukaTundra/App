@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Markdown from "react-markdown";
 
-import type { ArticleType } from "../../types";
+import type { ArticleType } from "../../types/types";
 
 import style from "./article.module.scss";
 

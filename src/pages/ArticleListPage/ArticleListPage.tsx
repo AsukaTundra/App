@@ -2,15 +2,15 @@ import React, { useEffect } from "react";
 import { Pagination } from "antd";
 import type { PaginationProps } from "antd";
 
-import { useAppSelector, useAppDispatch } from "../../hooks";
+import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
 import { handlerPagination, getArticles } from "../../store/blogSlice";
 import Article from "../../components/article";
 import ErrorAlert from "../../components/error";
 import Loader from "../../components/loader";
 
-import style from "./list.module.scss";
+import style from "./ArticleList.module.scss";
 
-const List: React.FC = () => {
+const ArticleListPage: React.FC = () => {
   const appState = useAppSelector((state) => state.blog);
   const dispatch = useAppDispatch();
 
@@ -48,4 +48,4 @@ const List: React.FC = () => {
   );
 };
 
-export default List;
+export default ArticleListPage;

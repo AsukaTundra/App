@@ -3,7 +3,7 @@ import { Divider } from "antd";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import type { FuncRequestForm } from "../../types";
+import type { FuncRequestForm } from "../../types/types";
 
 import style from "./account.module.scss";
 
@@ -17,8 +17,9 @@ type FormValues = {
   username: string,
   email: string,
   password: string,
-  repeatPassword: string,
-  personalInfo: boolean,
+  repeatPassword?: string,
+  personalInfo?: boolean,
+  image?: string,
 };
 
 const Account: React.FC<AccountProps> = ({ funcRequest, signUp = false, signIn = false, editProfile = false }) => {
@@ -53,7 +54,7 @@ const Account: React.FC<AccountProps> = ({ funcRequest, signUp = false, signIn =
               <label>
                 <p className={style.text}>Username</p>
                 <input
-                  className={`${style.inputText} ${errors?.username ? style.redBorder : null}`}
+                  className={`${style.inputText} ${errors.username ? style.redBorder : null}`}
                   {...register("username", {
                     required: "required",
                     pattern: { value: /^[a-zA-Z0-9]+$/, message: "only English letters and numbers" },
@@ -112,6 +113,25 @@ const Account: React.FC<AccountProps> = ({ funcRequest, signUp = false, signIn =
                 />
               </label>
               <div>{errors?.repeatPassword && <p className={style.invalidText}>{errors.repeatPassword.message}</p>}</div>
+            </>
+          )}
+          {editProfile && (
+            <>
+              <label>
+                <p className={style.text}>Avatar image &#40;url&#41;</p>
+                <input
+                  className={`${style.inputText} ${errors.image ? style.redBorder : null}`}
+                  {...register("image", {
+                    pattern: {
+                      value:
+                        /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/,
+                      message: "invalid url",
+                    },
+                  })}
+                  placeholder="Avatar image"
+                />
+              </label>
+              <div>{errors?.image && <p className={style.invalidText}>{errors.image.message}</p>}</div>
             </>
           )}
         </div>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import Article from "../../components/article";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { getArticle } from "../../store/blogSlice";
 import ErrorAlert from "../../components/error";
 import Loader from "../../components/loader";

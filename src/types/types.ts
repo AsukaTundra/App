@@ -74,9 +74,19 @@ export type PropsLoginUser = {
   password: string,
 };
 
-// ------------------- не распределил
+// ------------------------------------------- изменение данных аккаунта
 
-// состояние компонента аккаунта
+export type PropsUpdateUser = {
+  user: {
+    username: string,
+    email: string,
+    password: string,
+    image?: string,
+    token: string,
+  },
+};
+
+// компонент аккаунта
 export type StateFormAccount = {
   username: string,
   email: string,
@@ -85,11 +95,24 @@ export type StateFormAccount = {
   personalInfo?: boolean,
 };
 
-export type FuncRequestForm = (form: StateFormAccount) => void;
+type FormValues = {
+  username: string,
+  email: string,
+  password: string,
+  repeatPassword?: string,
+  personalInfo?: boolean,
+  image?: string,
+};
 
-// ошибка любого запроса на сервер
-export type RejectedRequest = {
-  errors: {
-    body: string[],
+export type FuncRequestForm = (form: FormValues) => void;
+
+// ------------------------------------- новая статья
+
+export type NewArticleProps = {
+  article: {
+    title: string,
+    description: string,
+    body: string,
+    tags?: string[],
   },
 };
