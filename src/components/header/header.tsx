@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { handlerLogOut } from "../../store/blogSlice";
-import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+import { useAppSelector, useAppDispatch } from "../../hooks";
 
 import style from "./header.module.scss";
 
@@ -11,7 +11,7 @@ const Header: React.FC = () => {
   const userData = useAppSelector((state) => state.blog.user);
 
   return (
-    <header className={style.layout}>
+    <header className={style.header}>
       <button className={style.logo}>
         <Link to="/">
           <p>Realworld Blog</p>
@@ -21,19 +21,19 @@ const Header: React.FC = () => {
       {userData.token ? (
         // user block
         <>
-          <div className={style.login}>
-            <div className={style.div}>
+          <div className={style.userBlock}>
+            <div className={style.container}>
               <Link to="new-article">
                 <p>Create article</p>
               </Link>
             </div>
-            <div className={style.div}>
+            <div className={style.container}>
               <Link to="edit-profile" className={style.link}>
                 <p>{userData.username}</p>
                 <img src={userData.image || "https://static.productionready.io/images/smiley-cyrus.jpg"} alt="avatar" />
               </Link>
             </div>
-            <div className={style.div}>
+            <div className={style.container}>
               <Link
                 to="/"
                 onClick={() => {
@@ -46,9 +46,9 @@ const Header: React.FC = () => {
           </div>
         </>
       ) : (
-        // main block
+        // logOut block
         <>
-          <div className={style.notLogin}>
+          <div className={style.logOut}>
             <button className={style.button}>
               <Link to="sign-in">
                 <p>Sign In</p>

@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-// eslint-disable-next-line import/no-unresolved, import/extensions
 import blogReducer from "./blogSlice";
 
 const store = configureStore({

@@ -10,8 +10,9 @@ import type {
   ReturnLoginUser,
   PropsLoginUser,
   PropsUpdateUser,
-  NewArticleProps,
-} from "../types/types";
+  PropsNewArticle,
+  PropsDeleteArticle,
+} from "../types/typesSlice";
 
 // ------------------------------------------- fetch
 
@@ -20,11 +21,11 @@ export const getArticles = createAsyncThunk<ReturnGetArticles, undefined, { reje
   async function (_, { rejectWithValue }) {
     const url = "https://blog.kata.academy/api/articles";
     const response = await fetch(url);
-    const result = await response.json();
     if (response.ok) {
+      const result = await response.json();
       return result;
     } else {
-      return rejectWithValue(result.errors.message);
+      return rejectWithValue("Error, please repeat later");
     }
   }
 );
@@ -34,11 +35,11 @@ export const getArticle = createAsyncThunk<ReturnGetArticle, string, { rejectVal
   async function (slug, { rejectWithValue }) {
     const url = `https://blog.kata.academy/api/articles/${slug}`;
     const response = await fetch(url);
-    const result = await response.json();
     if (response.ok) {
+      const result = await response.json();
       return result;
     } else {
-      return rejectWithValue(result);
+      return rejectWithValue("Not Found");
     }
   }
 );
@@ -46,26 +47,25 @@ export const getArticle = createAsyncThunk<ReturnGetArticle, string, { rejectVal
 export const registerUser = createAsyncThunk<ReturnRegisterUser, PropsRegisterUser, { rejectValue: string }>(
   "registerUser",
   async function (user, { rejectWithValue }) {
-    const { username, email, password } = user;
     const url = "https://blog.kata.academy/api/users";
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: `{"user":{"username":"${username}","email":"${email}","password":"${password}"}}`,
+      body: JSON.stringify(user),
     };
     const response = await fetch(url, options);
     const result = await response.json();
     if (response.ok) {
       document.cookie = `token=${result.user.token}; path=/; samesite; max-age=2592000`;
       return result;
-    }
-    if (response.status === 422) {
-      alert(`${Object.keys(result.errors)} is already taken`);
+    } else if (response.status === 422) {
+      alert(`${Object.keys(result.errors).join(" and ")} is already taken`);
       return rejectWithValue("");
     } else {
-      return rejectWithValue(result.errors.message);
+      alert("Error, please repeat later");
+      return rejectWithValue("");
     }
   }
 );
@@ -73,14 +73,13 @@ export const registerUser = createAsyncThunk<ReturnRegisterUser, PropsRegisterUs
 export const loginUser = createAsyncThunk<ReturnLoginUser, PropsLoginUser, { rejectValue: string }>(
   "loginUser",
   async function (user, { rejectWithValue }) {
-    const { email, password } = user;
     const url = "https://blog.kata.academy/api/users/login";
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: `{"user":{"email":"${email}","password":"${password}"}}`,
+      body: JSON.stringify(user),
     };
     const response = await fetch(url, options);
     const result = await response.json();
@@ -91,7 +90,8 @@ export const loginUser = createAsyncThunk<ReturnLoginUser, PropsLoginUser, { rej
       alert("Invalid username or password");
       return rejectWithValue("");
     } else {
-      return rejectWithValue(result.errors.message);
+      alert("Error, please repeat later");
+      return rejectWithValue("");
     }
   }
 );
@@ -107,8 +107,8 @@ export const getUser = createAsyncThunk<ReturnLoginUser, string, { rejectValue: 
       },
     };
     const response = await fetch(url, options);
-    const result = await response.json();
     if (response.ok) {
+      const result = await response.json();
       return result;
     } else {
       document.cookie = "token=null; max-age=0";
@@ -119,50 +119,67 @@ export const getUser = createAsyncThunk<ReturnLoginUser, string, { rejectValue: 
 
 export const updateUser = createAsyncThunk<ReturnLoginUser, PropsUpdateUser, { rejectValue: string }>(
   "updateUser",
-  async function (user, { rejectWithValue }) {
-    const { username, email, password, image, token } = user.user;
+  async function (data, { rejectWithValue }) {
     const url = "https://blog.kata.academy/api/user";
-    const body = image
-      ? `{"user":{"username":"${username}","email":"${email}","password":"${password}","image":"${image}"}}`
-      : `{"user":{"username":"${username}","email":"${email}","password":"${password}"}}`;
     const options = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${data.token}`,
       },
-      body: body,
+      body: JSON.stringify(data.user),
     };
     const response = await fetch(url, options);
     const result = await response.json();
     if (response.ok) {
       return result;
     } else if (response.status === 422) {
-      alert(`${Object.keys(result.errors)} is already taken`);
+      alert(`${Object.keys(result.errors).join(" and ")} is already taken`);
       rejectWithValue("");
     } else {
+      alert("Error, please repeat later");
       rejectWithValue("");
     }
   }
 );
 
-export const newArticle = createAsyncThunk<ArticleType, { data: NewArticleProps, token: string }, { rejectValue: string }>(
+export const newArticle = createAsyncThunk<ArticleType, PropsNewArticle, { rejectValue: string }>(
   "newArticle",
-  async function (article, { rejectWithValue }) {
+  async function (data, { rejectWithValue }) {
     const url = "https://blog.kata.academy/api/articles";
-    const body = JSON.stringify(article.data);
+    const body = JSON.stringify(data.article);
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${article.token}`,
+        Authorization: `Token ${data.token}`,
       },
       body: body,
     };
-    console.log(body);
     const response = await fetch(url, options);
-    const result = await response.json();
     if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      alert("Error, please repeat later");
+      rejectWithValue("");
+    }
+  }
+);
+
+export const deleteArticle = createAsyncThunk<unknown, PropsDeleteArticle, { rejectValue: string }>(
+  "deleteArticle",
+  async function (data, { rejectWithValue }) {
+    const url = `https://blog.kata.academy/api/articles/${data.slug}`;
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Token ${data.token}`,
+      },
+    };
+    const response = await fetch(url, options);
+    if (response.ok) {
+      const result = await response.json();
       return result;
     } else {
       rejectWithValue("");

@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Account from "../../components/account";
-import type { FuncRequestForm } from "../../types/types";
+import type { FuncRequestForm } from "../../types/typesComponents";
 import { loginUser } from "../../store/blogSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import AccountForm from "../../components/accountForm";
 
 const SignInPage: React.FC = () => {
-  const dispatch = useAppDispatch();
   const appState = useAppSelector((state) => state.blog);
+  const dispatch = useAppDispatch();
 
   const requestForm: FuncRequestForm = (form) => {
-    dispatch(loginUser(form));
+    dispatch(loginUser({ user: { email: form.email, password: form.password } }));
   };
 
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const SignInPage: React.FC = () => {
     }
   }, [appState.user.token]);
 
-  return <Account funcRequest={requestForm} signIn={true} />;
+  return <AccountForm funcRequest={requestForm} signIn={true} />;
 };
 
 export default SignInPage;

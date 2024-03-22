@@ -1,9 +1,9 @@
 import React from "react";
 
-import ErrorAlert from "../../components/error";
+import ErrorBlock from "../../components/errorBlock";
 
 const NotFoundPage: React.FC = () => {
-  return <ErrorAlert error={"Not Found"} />;
+  return <ErrorBlock error={"Not Found"} />;
 };
 
 export default NotFoundPage;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { useAppDispatch } from "../hooks/hooks";
+import { useAppDispatch } from "../hooks";
 import { getUser } from "../store/blogSlice";
 import Layout from "../layout";
 import ArticleListPage from "../pages/ArticleListPage";

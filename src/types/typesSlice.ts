@@ -15,7 +15,7 @@ export type State = {
   },
 };
 
-// ------------------------------------------- статьи
+// --- статьи
 export type ArticleType = {
   slug: string,
   title: string,
@@ -43,7 +43,22 @@ export type ReturnGetArticle = {
   article: ArticleType,
 };
 
-// ------------------------------------------- регистрация/авторизация
+export type PropsNewArticle = {
+  article: {
+    title: string,
+    description: string,
+    body: string,
+    tags?: string[],
+  },
+  token: string,
+};
+
+export type PropsDeleteArticle = {
+  slug: string,
+  token: string,
+};
+
+// --- аккаунт
 
 export type ReturnRegisterUser = {
   user: {
@@ -54,9 +69,11 @@ export type ReturnRegisterUser = {
 };
 
 export type PropsRegisterUser = {
-  username: string,
-  email: string,
-  password: string,
+  user: {
+    username: string,
+    email: string,
+    password: string,
+  },
 };
 
 export type ReturnLoginUser = {
@@ -70,11 +87,11 @@ export type ReturnLoginUser = {
 };
 
 export type PropsLoginUser = {
-  email: string,
-  password: string,
+  user: {
+    email: string,
+    password: string,
+  },
 };
-
-// ------------------------------------------- изменение данных аккаунта
 
 export type PropsUpdateUser = {
   user: {
@@ -82,37 +99,6 @@ export type PropsUpdateUser = {
     email: string,
     password: string,
     image?: string,
-    token: string,
   },
-};
-
-// компонент аккаунта
-export type StateFormAccount = {
-  username: string,
-  email: string,
-  password: string,
-  repeatPassword?: string,
-  personalInfo?: boolean,
-};
-
-type FormValues = {
-  username: string,
-  email: string,
-  password: string,
-  repeatPassword?: string,
-  personalInfo?: boolean,
-  image?: string,
-};
-
-export type FuncRequestForm = (form: FormValues) => void;
-
-// ------------------------------------- новая статья
-
-export type NewArticleProps = {
-  article: {
-    title: string,
-    description: string,
-    body: string,
-    tags?: string[],
-  },
+  token: string,
 };

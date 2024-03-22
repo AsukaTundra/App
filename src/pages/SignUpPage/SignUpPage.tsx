@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Account from "../../components/account";
-import type { FuncRequestForm } from "../../types/types";
+import type { FuncRequestForm } from "../../types/typesComponents";
 import { registerUser } from "../../store/blogSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import AccountForm from "../../components/accountForm";
 
 const SignUpPage: React.FC = () => {
-  const dispatch = useAppDispatch();
   const appState = useAppSelector((state) => state.blog);
+  const dispatch = useAppDispatch();
 
   const requestForm: FuncRequestForm = (form) => {
-    dispatch(registerUser(form));
+    dispatch(registerUser({ user: { username: form.username, email: form.email, password: form.password } }));
   };
 
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const SignUpPage: React.FC = () => {
     }
   }, [appState.user.token]);
 
-  return <Account funcRequest={requestForm} signUp={true} />;
+  return <AccountForm funcRequest={requestForm} signUp={true} />;
 };
 
 export default SignUpPage;

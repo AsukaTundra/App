@@ -1,14 +1,17 @@
-.article {
+.articleBlock {
   width: 1200px;
   position: relative;
   margin: 25px auto 0 auto;
-  height: 200px;
+  height: auto;
+  min-height: 200px;
+  max-height: 1200px;
   padding: 20px;
   font-family: "Inter UI";
   background-color: white;
   border-radius: 5px;
   line-height: 28px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  overflow: hidden;
 
   &.bodyVisible {
     height: 100%;
@@ -16,7 +19,10 @@
 }
 
 .content {
+  position: relative;  
+
   .title {
+    width: 100%;
     display: inline-block;
     color: #1890FF;
     font-size: 20px;
@@ -29,14 +35,14 @@
     display: inline-block;
     font-size: 14px;
     line-height: 20px;
-    background-image: url(../../assets/img/article/heart.svg);
+    background-image: url(../../assets/img/heart.svg);
     background-repeat: no-repeat;
     background-size: 60%;
     background-position: 10% 10%;
   }
   
   .tag {
-    margin-right: 10px;
+    margin: 10px 10px 0 0;
     padding: 4px;
     color: gray;
     font-size: 12px;
@@ -50,20 +56,60 @@
       border-color: black;
     }
   }
-  
+
   .description {
+    margin-top: 20px;
+    line-height: 22px;
     font-size: 12px;
   }
 }
 
+.divButtons {
+  right: 0;
+  top: 70px;
+  position: absolute;
+
+  .button {
+    padding: 4px 8px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 18px;
+
+    &:first-child {
+      margin-right: 10px;
+      color: #F5222D;
+      border-color: #F5222D;
+
+      &:hover {
+        color: white;
+        border-color: white;
+        background-color: #F5222D;
+      }
+    }
+
+    &:last-child {
+      color: #52C41A;
+      border-color: #52C41A;
+
+      &:hover {
+        color: white;
+        border-color: white;
+        background-color: #52C41A;
+      }
+    }
+  }
+}
+
 .author {
+  margin: 0 0 10px 20px;
+  float: inline-end;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  position: relative;
   padding-right: 65px;
   text-align: end;
+  color: black;
+  background-color: white;
 
   .name {
     font-size: 18px;
@@ -84,14 +130,15 @@
     height: 50px;
     border-radius: 50%;
     overflow: hidden;
+    object-fit: cover;
   }
+}
+
+.marginBottom {
+  margin-bottom: 80px;
 }
 
 .bodyContainer {
   margin-top: 20px;
   overflow: hidden;
-
-  .body {
-    
-  }
 }

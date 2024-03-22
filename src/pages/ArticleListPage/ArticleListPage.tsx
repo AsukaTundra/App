@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { Pagination } from "antd";
 import type { PaginationProps } from "antd";
 
-import { useAppSelector, useAppDispatch } from "../../hooks/hooks";
+import { useAppSelector, useAppDispatch } from "../../hooks";
 import { handlerPagination, getArticles } from "../../store/blogSlice";
-import Article from "../../components/article";
-import ErrorAlert from "../../components/error";
+import ArticleBlock from "../../components/articleBlock";
+import ErrorBlock from "../../components/errorBlock";
 import Loader from "../../components/loader";
 
 import style from "./ArticleList.module.scss";
@@ -22,16 +22,15 @@ const ArticleListPage: React.FC = () => {
     dispatch(handlerPagination(page));
   };
 
-  const elem = appState.articles.articles;
-  const articles = elem.map((item, index) => {
+  const articles = appState.articles.articles.map((item, index) => {
     const key = index + Number(new Date(item.createdAt));
-    return <Article key={key} bodyVisible={false} parentKey={key} item={{ ...item }} />;
+    return <ArticleBlock key={key} bodyVisible={false} parentKey={key} item={{ ...item }} />;
   });
 
   return (
     <>
       {appState.loading ? <Loader /> : null}
-      {appState.error ? <ErrorAlert error={appState.error} /> : null}
+      {appState.error ? <ErrorBlock error={appState.error} /> : null}
       {!appState.error && !appState.loading ? (
         <>
           <div className={style.list}>{articles}</div>

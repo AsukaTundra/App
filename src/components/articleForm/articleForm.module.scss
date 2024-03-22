@@ -15,14 +15,15 @@
 }
 
 .formContainer {
+  position: relative;
   margin-top: 20px;
 
-  .text {
+  .inputTitle {
     margin-top: 15px;
     font-size: 14px;
   }
 
-  .inputText {
+  .input {
     margin-top: 5px;
     padding: 10px;
     width: 100%;
@@ -31,15 +32,11 @@
     border-radius: 3px;
   }
 
-  .inputBigText {
+  .inputTextarea {
     box-sizing: border-box;
     word-wrap: break-word;
     height: 250px;
     width: 100%;
-  }
-
-  .inputTags {
-    width: 300px;
   }
 
   .invalidText {
@@ -49,6 +46,13 @@
 
   .redBorder {
     border-color: red;
+  }
+
+  .invalidTags {
+    position: absolute;
+    width: 400px;
+    top: 455px;
+    right: 10px;
   }
 }
 
@@ -67,7 +71,7 @@
       background-color: #F5222D;
     }
 
-    &.blue {
+    &.buttonAdd {
       position: absolute;
       left: 404px;
       bottom: 0px;
@@ -79,6 +83,10 @@
         background-color: #1890FF;
       }
     }
+  }
+
+  .inputTags {
+    width: 300px;
   }
 }
 
