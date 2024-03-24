@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { handlerLogOut } from "../../store/blogSlice";
+import { handlerLogOut, handlerPagination } from "../../store/blogSlice";
 import { useAppSelector, useAppDispatch } from "../../hooks";
 
 import style from "./header.module.scss";
@@ -12,7 +12,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={style.header}>
-      <button className={style.logo}>
+      <button className={style.logo} onClick={() => dispatch(handlerPagination(1))}>
         <Link to="/">
           <p>Realworld Blog</p>
         </Link>

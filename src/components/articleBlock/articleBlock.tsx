@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Markdown from "react-markdown";
+import { format } from "date-fns";
 
 import type { ArticleBlockProps } from "../../types/typesComponents";
-// import { deleteArticle } from "../../store/blogSlice";
 
 import style from "./articleBlock.module.scss";
 
-const ArticleBlock: React.FC<ArticleBlockProps> = ({ bodyVisible, parentKey, item }) => {
-  // const [doDelete, setDoDelete] = useState(0);
+const ArticleBlock: React.FC<ArticleBlockProps> = ({
+  requestDelete,
+  requestCreated,
+  bodyVisible,
+  contorlVisible,
+  parentKey,
+  item,
+}) => {
+  const [windowDelete, setWindowDelete] = useState(false);
 
   const tags = item.tagList.map((tag, index) => {
     const key = index + parentKey;
@@ -21,41 +27,55 @@ const ArticleBlock: React.FC<ArticleBlockProps> = ({ bodyVisible, parentKey, ite
   });
 
   return (
-    <div className={`${style.articleBlock} ${bodyVisible ? style.bodyVisible : null}`}>
-      {/* content */}
-      <div className={style.content}>
-        <Link className={style.title} to={`/article/${item.slug}`}>
-          {/* author */}
-          <div className={`${style.author} ${bodyVisible ? style.marginBottom : null}`}>
-            <p className={style.name}>{item.author.username}</p>
-            <p className={style.createdDate}>{format(new Date(item.createdAt), "PP")}</p>
-            <img className={style.img} src={item.author.image} alt="user avatar" />
+    <>
+      <div className={`${style.articleBlock} ${bodyVisible ? style.bodyVisible : null}`}>
+        <div className={style.container}>
+          <div className={style.content}>
+            <div className={style.titleContainer}>
+              <div className={`${style.author} ${bodyVisible ? style.marginBottom : null}`}>
+                <p className={style.name}>{item.author.username}</p>
+                <p className={style.createdDate}>{format(new Date(item.createdAt), "PP")}</p>
+                <img className={style.img} src={item.author.image} alt="user avatar" />
+              </div>
+              {bodyVisible && contorlVisible ? (
+                <>
+                  <div className={style.divButtons}>
+                    <button className={style.button} onClick={() => setWindowDelete(true)}>
+                      Delete
+                    </button>
+                    <button className={style.button} onClick={() => requestCreated()}>
+                      Edit
+                    </button>
+                  </div>
+                </>
+              ) : null}
+              <Link to={`/article/${item.slug}`}>{item.title}</Link>
+              <p className={style.like}>{item.favoritesCount}</p>
+              <div>{tags}</div>
+              <p className={style.description}>{item.description}</p>
+            </div>
           </div>
           {bodyVisible && (
-            <>
-              <div className={style.divButtons}>
-                <button className={style.button} onClick={() => console.log(1)}>
-                  Delete
-                </button>
-                <button className={style.button} onClick={() => console.log(1)}>
-                  Edit
-                </button>
-              </div>
-            </>
+            <div className={style.bodyContainer}>
+              <Markdown className={style.body}>{item.body}</Markdown>
+            </div>
           )}
-          {item.title}
-        </Link>
-        <p className={style.like}>{item.favoritesCount}</p>
-        <div>{tags}</div>
-        <p className={style.description}>{item.description}</p>
-      </div>
-      {/* body */}
-      {bodyVisible && (
-        <div className={style.bodyContainer}>
-          <Markdown className={style.body}>{item.body}</Markdown>
         </div>
-      )}
-    </div>
+        {windowDelete && (
+          <>
+            <div className={style.deleteContainer}>
+              <p className={style.text}>Are you sure to delete this article?</p>
+              <button className={style.button} onClick={() => setWindowDelete(false)}>
+                No
+              </button>
+              <button className={style.button} onClick={() => requestDelete()}>
+                Yes
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

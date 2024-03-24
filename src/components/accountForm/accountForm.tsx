@@ -149,7 +149,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
       {!editProfile && (
         <>
           <p className={style.signOther}>
-            {signUp ? "Already have an account? " : "Don&#39;t have an account? "}
+            {signUp ? "Already have an account? " : "Don't have an account? "}
             <Link className={style.signOtherLink} to={signUp ? "/sign-in" : "/sign-up"}>
               {signUp ? "Sign In" : "Sign Up."}
             </Link>

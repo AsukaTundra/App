@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { getArticle } from "../../store/blogSlice";
+import { getArticle, deleteArticle } from "../../store/blogSlice";
 import ArticleBlock from "../../components/articleBlock";
 import ErrorBlock from "../../components/errorBlock";
 import Loader from "../../components/loader";
@@ -12,6 +12,10 @@ const ArticlePage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { slug } = useParams();
+
+  const navigate = useNavigate();
+  const goMainPage = () => navigate("/");
+  const goArticleEditPage = () => navigate(`/articles/${slug}/edit`);
 
   useEffect(() => {
     if (slug) {
@@ -28,7 +32,23 @@ const ArticlePage: React.FC = () => {
   } else if (appState.articles.article === null) {
     return <ErrorBlock error={"Not Found"} />;
   }
-  return <ArticleBlock bodyVisible={true} parentKey={1} item={appState.articles.article} />;
+
+  const data = { slug: slug, token: document.cookie.split("=")[1] };
+  return (
+    <ArticleBlock
+      requestDelete={() => {
+        dispatch(deleteArticle(data));
+        setTimeout(() => goMainPage(), 600);
+      }}
+      requestCreated={() => {
+        goArticleEditPage();
+      }}
+      bodyVisible={true}
+      contorlVisible={appState.articles.article.author.username === appState.user.username}
+      parentKey={1}
+      item={appState.articles.article}
+    />
+  );
 };
 
 export default ArticlePage;

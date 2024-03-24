@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Pagination } from "antd";
 import type { PaginationProps } from "antd";
+import { useNavigate } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import { handlerPagination, getArticles } from "../../store/blogSlice";
@@ -14,12 +15,16 @@ const ArticleListPage: React.FC = () => {
   const appState = useAppSelector((state) => state.blog);
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
+  const goMainPage = () => navigate("/");
+
   useEffect(() => {
-    dispatch(getArticles());
+    dispatch(getArticles(appState.articles.page));
   }, [appState.articles.page, dispatch]);
 
   const onChange: PaginationProps["onChange"] = (page) => {
     dispatch(handlerPagination(page));
+    goMainPage();
   };
 
   const articles = appState.articles.articles.map((item, index) => {

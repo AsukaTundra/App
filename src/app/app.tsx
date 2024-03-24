@@ -10,6 +10,7 @@ import SignUpPage from "../pages/SignUpPage";
 import SignInPage from "../pages/SignInPage";
 import EditProfilePage from "../pages/EditProfilePage";
 import NewArticlePage from "../pages/NewArticlePage";
+import ArticleEditPage from "../pages/ArticleEditPage";
 import NotFoundPage from "../pages/NotFoundPage";
 
 import "../assets/fonts/index.css";
@@ -30,6 +31,7 @@ const App: React.FC = () => {
           <Route path="sign-in" element={<SignInPage />} />
           <Route path="edit-profile" element={<EditProfilePage />} />
           <Route path="new-article" element={<NewArticlePage />} />
+          <Route path="articles/:slug/edit" element={<ArticleEditPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

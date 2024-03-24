@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type {
   State,
-  ArticleType,
   ReturnGetArticles,
   ReturnGetArticle,
   ReturnRegisterUser,
@@ -11,15 +10,16 @@ import type {
   PropsLoginUser,
   PropsUpdateUser,
   PropsNewArticle,
+  ReturnNewArticle,
   PropsDeleteArticle,
 } from "../types/typesSlice";
 
 // ------------------------------------------- fetch
 
-export const getArticles = createAsyncThunk<ReturnGetArticles, undefined, { rejectValue: string }>(
+export const getArticles = createAsyncThunk<ReturnGetArticles, number, { rejectValue: string }>(
   "getArticles",
-  async function (_, { rejectWithValue }) {
-    const url = "https://blog.kata.academy/api/articles";
+  async function (page, { rejectWithValue }) {
+    const url = `https://blog.kata.academy/api/articles?offset=${(page - 1) * 20}`;
     const response = await fetch(url);
     if (response.ok) {
       const result = await response.json();
@@ -127,7 +127,7 @@ export const updateUser = createAsyncThunk<ReturnLoginUser, PropsUpdateUser, { r
         "Content-Type": "application/json",
         Authorization: `Token ${data.token}`,
       },
-      body: JSON.stringify(data.user),
+      body: JSON.stringify({ user: data.user }),
     };
     const response = await fetch(url, options);
     const result = await response.json();
@@ -143,18 +143,17 @@ export const updateUser = createAsyncThunk<ReturnLoginUser, PropsUpdateUser, { r
   }
 );
 
-export const newArticle = createAsyncThunk<ArticleType, PropsNewArticle, { rejectValue: string }>(
+export const newArticle = createAsyncThunk<ReturnNewArticle, PropsNewArticle, { rejectValue: string }>(
   "newArticle",
   async function (data, { rejectWithValue }) {
     const url = "https://blog.kata.academy/api/articles";
-    const body = JSON.stringify(data.article);
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${data.token}`,
       },
-      body: body,
+      body: JSON.stringify({ article: data.article }),
     };
     const response = await fetch(url, options);
     if (response.ok) {
@@ -178,11 +177,11 @@ export const deleteArticle = createAsyncThunk<unknown, PropsDeleteArticle, { rej
       },
     };
     const response = await fetch(url, options);
+    const result = await response.json();
     if (response.ok) {
-      const result = await response.json();
       return result;
     } else {
-      rejectWithValue("");
+      rejectWithValue("5656");
     }
   }
 );
@@ -280,8 +279,8 @@ const blogReducer = createSlice({
       state.error = action.payload;
     });
     // newArticle
-    builder.addCase(newArticle.fulfilled, (state, action: PayloadAction<ArticleType>) => {
-      state.articles.article = action.payload;
+    builder.addCase(newArticle.fulfilled, (state, action: PayloadAction<ReturnNewArticle>) => {
+      state.articles.article = action.payload.article;
     });
     builder.addCase(newArticle.rejected, (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;

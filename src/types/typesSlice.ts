@@ -53,8 +53,10 @@ export type PropsNewArticle = {
   token: string,
 };
 
+export type ReturnNewArticle = ReturnGetArticle;
+
 export type PropsDeleteArticle = {
-  slug: string,
+  slug?: string,
   token: string,
 };
 

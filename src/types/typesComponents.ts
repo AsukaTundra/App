@@ -23,7 +23,10 @@ export type FuncRequestForm = (form: AccountFormValues) => void;
 import { ArticleType } from "./typesSlice";
 
 export type ArticleBlockProps = {
+  requestDelete: () => void,
+  requestCreated: () => void,
   bodyVisible: boolean,
+  contorlVisible: boolean,
   parentKey: number,
   item: ArticleType,
 };
