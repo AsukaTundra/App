@@ -1,3 +1,2 @@
-import ArticlePage from "./ArticlePage.tsx";
-
+import { ArticlePage } from "./ArticlePage.tsx";
 export default ArticlePage;

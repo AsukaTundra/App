@@ -1,3 +1,2 @@
-import ArticleBlock from "./articleBlock.tsx";
-
+import { ArticleBlock } from "./articleBlock.tsx";
 export default ArticleBlock;

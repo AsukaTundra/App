@@ -4,18 +4,18 @@ import { Routes, Route } from "react-router-dom";
 import { useAppDispatch } from "../hooks";
 import { getUser } from "../store/blogSlice";
 import Layout from "../layout";
-import ArticleListPage from "../pages/ArticleListPage";
-import ArticlePage from "../pages/ArticlePage";
-import SignUpPage from "../pages/SignUpPage";
-import SignInPage from "../pages/SignInPage";
-import EditProfilePage from "../pages/EditProfilePage";
-import NewArticlePage from "../pages/NewArticlePage";
-import ArticleEditPage from "../pages/ArticleEditPage";
-import NotFoundPage from "../pages/NotFoundPage";
+import ArticleListPage from "../pages/articleListPage";
+import ArticlePage from "../pages/articlePage";
+import SignUpPage from "../pages/signUpPage";
+import SignInPage from "../pages/signInPage";
+import EditProfilePage from "../pages/editProfilePage";
+import NewArticlePage from "../pages/newArticlePage";
+import ArticleEditPage from "../pages/articleEditPage";
+import NotFoundPage from "../pages/notFoundPage";
 
 import "../assets/fonts/index.css";
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   if (document.cookie) {
     dispatch(getUser(document.cookie.split("=")[1]));
@@ -38,5 +38,3 @@ const App: React.FC = () => {
     </>
   );
 };
-
-export default App;

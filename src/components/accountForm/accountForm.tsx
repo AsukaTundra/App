@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import { Divider } from "antd";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { Divider } from "antd";
 
 import { useAppSelector } from "../../hooks";
 import type { AccountFormValues, AccountFormProps } from "../../types/typesComponents";
 
 import style from "./accountForm.module.scss";
 
-const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, signIn = false, editProfile = false }) => {
-  const appState = useAppSelector((state) => state.blog.user);
+export const AccountForm: React.FC<AccountFormProps> = ({
+  funcRequest,
+  signUp = false,
+  signIn = false,
+  editProfile = false,
+}) => {
+  const user = useAppSelector((state) => state.blog.user);
   const [repeatPass, setRepeatPass] = useState("");
 
   const {
@@ -33,6 +38,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={style.formContainer}>
           {/* username */}
+
           {(signUp || editProfile) && (
             <>
               <label>
@@ -46,12 +52,13 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
                     maxLength: { value: 20, message: "maximum 20 characters" },
                   })}
                   placeholder="Username"
-                  defaultValue={editProfile ? `${appState.username}` : ""}
+                  defaultValue={editProfile ? `${user.username}` : ""}
                 />
               </label>
               <div>{errors?.username && <p className={style.inputInvalid}>{errors.username.message}</p>}</div>
             </>
           )}
+
           {/* email */}
           <label>
             <p className={style.inputTitle}>Email address</p>
@@ -62,10 +69,11 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
                 pattern: { value: /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/, message: "invalid email" },
               })}
               placeholder="Email address"
-              defaultValue={editProfile ? `${appState.email}` : ""}
+              defaultValue={editProfile ? `${user.email}` : ""}
             />
           </label>
           <div>{errors?.email && <p className={style.inputInvalid}>{errors.email.message}</p>}</div>
+
           {/* password/new password */}
           <label>
             <p className={style.inputTitle}>{editProfile ? "New Password" : "Password"}</p>
@@ -82,6 +90,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
             />
           </label>
           <div>{errors?.password && <p className={style.inputInvalid}>{errors.password.message}</p>}</div>
+
           {/* Repeat Password */}
           {signUp && (
             <>
@@ -90,16 +99,16 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
                 <input
                   className={`${style.inputText} ${errors.repeatPassword ? style.redBorder : null}`}
                   {...register("repeatPassword", {
-                    required: "required",
                     validate: (value) => value === repeatPass,
                   })}
                   placeholder="Pepeat password"
                   type="password"
                 />
               </label>
-              <div>{errors?.repeatPassword && <p className={style.inputInvalid}>{errors.repeatPassword.message}</p>}</div>
+              <div>{errors?.repeatPassword && <p className={style.inputInvalid}>passwords don&#8242;t match</p>}</div>
             </>
           )}
+
           {/* avatar image */}
           {editProfile && (
             <>
@@ -121,6 +130,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
             </>
           )}
         </div>
+
         {/* antd divider */}
         {signUp && (
           <>
@@ -138,6 +148,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
             <div>{errors?.personalInfo && <p className={style.inputInvalid}>{errors.personalInfo.message}</p>}</div>
           </>
         )}
+
         {/* submit button */}
         <button className={style.button} type="submit" onClick={() => handleSubmit(onSubmit)}>
           {signUp && "Create"}
@@ -145,6 +156,7 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
           {editProfile && "Save"}
         </button>
       </form>
+
       {/* redirect */}
       {!editProfile && (
         <>
@@ -159,5 +171,3 @@ const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp = false, 
     </div>
   );
 };
-
-export default AccountForm;

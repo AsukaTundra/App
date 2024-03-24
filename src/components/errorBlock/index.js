@@ -1,3 +1,2 @@
-import ErrorBlock from "./errorBlock.tsx";
-
+import { ErrorBlock } from "./errorBlock.tsx";
 export default ErrorBlock;

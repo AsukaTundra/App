@@ -1,22 +1,19 @@
 import React, { useEffect } from "react";
 import { Pagination } from "antd";
 import type { PaginationProps } from "antd";
-import { useNavigate } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../../hooks";
 import { handlerPagination, getArticles } from "../../store/blogSlice";
+import { useAppSelector, useAppDispatch, useNav } from "../../hooks";
 import ArticleBlock from "../../components/articleBlock";
 import ErrorBlock from "../../components/errorBlock";
 import Loader from "../../components/loader";
 
 import style from "./ArticleList.module.scss";
 
-const ArticleListPage: React.FC = () => {
+export const ArticleListPage: React.FC = () => {
   const appState = useAppSelector((state) => state.blog);
   const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
-  const goMainPage = () => navigate("/");
+  const navigate = useNav();
 
   useEffect(() => {
     dispatch(getArticles(appState.articles.page));
@@ -24,7 +21,7 @@ const ArticleListPage: React.FC = () => {
 
   const onChange: PaginationProps["onChange"] = (page) => {
     dispatch(handlerPagination(page));
-    goMainPage();
+    navigate("/");
   };
 
   const articles = appState.articles.articles.map((item, index) => {
@@ -51,5 +48,3 @@ const ArticleListPage: React.FC = () => {
     </>
   );
 };
-
-export default ArticleListPage;

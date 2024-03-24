@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Markdown from "react-markdown";
 import { format } from "date-fns";
+import Markdown from "react-markdown";
 
 import type { ArticleBlockProps } from "../../types/typesComponents";
 
 import style from "./articleBlock.module.scss";
 
-const ArticleBlock: React.FC<ArticleBlockProps> = ({
+export const ArticleBlock: React.FC<ArticleBlockProps> = ({
   requestDelete,
   requestCreated,
   bodyVisible,
@@ -31,19 +31,22 @@ const ArticleBlock: React.FC<ArticleBlockProps> = ({
       <div className={`${style.articleBlock} ${bodyVisible ? style.bodyVisible : null}`}>
         <div className={style.container}>
           <div className={style.content}>
+            {/* title */}
             <div className={style.titleContainer}>
+              {/* author */}
               <div className={`${style.author} ${bodyVisible ? style.marginBottom : null}`}>
                 <p className={style.name}>{item.author.username}</p>
                 <p className={style.createdDate}>{format(new Date(item.createdAt), "PP")}</p>
                 <img className={style.img} src={item.author.image} alt="user avatar" />
               </div>
+              {/* delete/edit buttons */}
               {bodyVisible && contorlVisible ? (
                 <>
                   <div className={style.divButtons}>
                     <button className={style.button} onClick={() => setWindowDelete(true)}>
                       Delete
                     </button>
-                    <button className={style.button} onClick={() => requestCreated()}>
+                    <button className={style.button} onClick={() => (requestCreated ? requestCreated() : null)}>
                       Edit
                     </button>
                   </div>
@@ -55,12 +58,15 @@ const ArticleBlock: React.FC<ArticleBlockProps> = ({
               <p className={style.description}>{item.description}</p>
             </div>
           </div>
+
+          {/* body */}
           {bodyVisible && (
             <div className={style.bodyContainer}>
               <Markdown className={style.body}>{item.body}</Markdown>
             </div>
           )}
         </div>
+        {/* delete window */}
         {windowDelete && (
           <>
             <div className={style.deleteContainer}>
@@ -68,7 +74,7 @@ const ArticleBlock: React.FC<ArticleBlockProps> = ({
               <button className={style.button} onClick={() => setWindowDelete(false)}>
                 No
               </button>
-              <button className={style.button} onClick={() => requestDelete()}>
+              <button className={style.button} onClick={() => (requestDelete ? requestDelete() : null)}>
                 Yes
               </button>
             </div>
@@ -78,5 +84,3 @@ const ArticleBlock: React.FC<ArticleBlockProps> = ({
     </>
   );
 };
-
-export default ArticleBlock;

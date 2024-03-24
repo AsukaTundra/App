@@ -1,3 +1,2 @@
-import NotFoundPage from "./NotFoundPage.tsx";
-
+import { NotFoundPage } from "./NotFoundPage.tsx";
 export default NotFoundPage;

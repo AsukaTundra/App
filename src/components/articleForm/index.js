@@ -1,3 +1,2 @@
-import ArticleForm from "./articleForm.tsx";
-
+import { ArticleForm } from "./articleForm.tsx";
 export default ArticleForm;

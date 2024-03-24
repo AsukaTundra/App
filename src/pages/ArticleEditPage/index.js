@@ -1,3 +1,2 @@
-import ArticleEditPage from "./ArticleEditPage.tsx";
-
+import { ArticleEditPage } from "./ArticleEditPage.tsx";
 export default ArticleEditPage;

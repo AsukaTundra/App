@@ -12,6 +12,7 @@ import type {
   PropsNewArticle,
   ReturnNewArticle,
   PropsDeleteArticle,
+  PropsUpdateArticle,
 } from "../types/typesSlice";
 
 // ------------------------------------------- fetch
@@ -186,6 +187,29 @@ export const deleteArticle = createAsyncThunk<unknown, PropsDeleteArticle, { rej
   }
 );
 
+export const updateArticle = createAsyncThunk<ReturnNewArticle, PropsUpdateArticle, { rejectValue: string }>(
+  "updateArticle",
+  async function (data, { rejectWithValue }) {
+    const url = `https://blog.kata.academy/api/articles/${data.slug}`;
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${data.token}`,
+      },
+      body: JSON.stringify({ article: data.article }),
+    };
+    const response = await fetch(url, options);
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      alert("Error, please repeat later");
+      rejectWithValue("");
+    }
+  }
+);
+
 // ------------------------------------------- reducer
 
 const initialState: State = {
@@ -283,6 +307,13 @@ const blogReducer = createSlice({
       state.articles.article = action.payload.article;
     });
     builder.addCase(newArticle.rejected, (state, action: PayloadAction<string | undefined>) => {
+      state.error = action.payload;
+    });
+    // updateArticle
+    builder.addCase(updateArticle.fulfilled, (state, action: PayloadAction<ReturnNewArticle>) => {
+      state.articles.article = action.payload.article;
+    });
+    builder.addCase(updateArticle.rejected, (state, action: PayloadAction<string | undefined>) => {
       state.error = action.payload;
     });
   },

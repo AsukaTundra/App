@@ -5,7 +5,7 @@ import { updateUser } from "../../store/blogSlice";
 import { useAppDispatch } from "../../hooks";
 import AccountForm from "../../components/accountForm";
 
-const EditProfilePage: React.FC = () => {
+export const EditProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const requestForm: FuncRequestForm = (form) => {
@@ -21,5 +21,3 @@ const EditProfilePage: React.FC = () => {
 
   return <AccountForm funcRequest={requestForm} editProfile={true} />;
 };
-
-export default EditProfilePage;

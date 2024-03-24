@@ -1,28 +1,24 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 import type { FuncRequestForm } from "../../types/typesComponents";
 import { loginUser } from "../../store/blogSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector, useNav } from "../../hooks";
 import AccountForm from "../../components/accountForm";
 
-const SignInPage: React.FC = () => {
-  const appState = useAppSelector((state) => state.blog);
+export const SignInPage: React.FC = () => {
+  const userState = useAppSelector((state) => state.blog.user);
   const dispatch = useAppDispatch();
+
+  const nav = useNav();
+  useEffect(() => {
+    if (userState.token) {
+      nav("/");
+    }
+  }, [userState.token]);
 
   const requestForm: FuncRequestForm = (form) => {
     dispatch(loginUser({ user: { email: form.email, password: form.password } }));
   };
 
-  const navigate = useNavigate();
-  const goMainPage = () => navigate("/");
-  useEffect(() => {
-    if (appState.user.token) {
-      goMainPage();
-    }
-  }, [appState.user.token]);
-
   return <AccountForm funcRequest={requestForm} signIn={true} />;
 };
-
-export default SignInPage;

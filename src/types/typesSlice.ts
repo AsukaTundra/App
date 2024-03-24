@@ -60,6 +60,16 @@ export type PropsDeleteArticle = {
   token: string,
 };
 
+export type PropsUpdateArticle = {
+  article: {
+    title: string,
+    description: string,
+    body: string,
+  },
+  slug: string,
+  token: string,
+};
+
 // --- аккаунт
 
 export type ReturnRegisterUser = {

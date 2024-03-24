@@ -1,32 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import type { ArticleFormProps, ArticleFormValues } from "../../types/typesComponents";
+import { useAppSelector } from "../../hooks";
 
 import style from "./articleForm.module.scss";
 
-const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest }) => {
-  const [count, setCount] = useState(0);
+export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEdit }) => {
+  const articleState = useAppSelector((state) => state.blog.articles.article);
+  const [invalidTagCount, setInvalidTagCount] = useState(0);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const deleteTagsCount: (event: any) => void = (event) => {
+  const deleteTags: (event: any) => void = (event) => {
+    console.log(2);
     const parentDiv = event.target.parentElement;
     parentDiv.remove();
   };
 
-  const addTagsCount = () => {
-    const newInput = document.querySelector(".templateInput")?.cloneNode(true);
-    if (newInput) {
+  console.log(1);
+  // creating new tags input
+  const addTags = (cycle: number, arrayValues?: string[]) => {
+    const inputContainer = document.querySelector(".inputsContainer");
+    for (let i = 0; i < cycle; i++) {
+      const inputText = document.createElement("input");
+      inputText.classList.add(`${style.input}`);
+      inputText.classList.add(`${style.inputTags}`);
+      inputText.setAttribute("placeholder", "Tag");
+      inputText.setAttribute("value", `${arrayValues ? arrayValues[i] : ""}`);
+
       const deleteButton = document.createElement("button");
       deleteButton.classList.add(`${style.buttonTags}`);
       deleteButton.type = "button";
       deleteButton.innerText = "Delete tag";
-      deleteButton.addEventListener("click", (event) => deleteTagsCount(event));
-      newInput.appendChild(deleteButton);
-      const inputContainer = document.querySelector(".inputsContainer");
-      inputContainer?.appendChild(newInput);
+      deleteButton.addEventListener("click", (event) => deleteTags(event));
+
+      const div = document.createElement("div");
+      div.appendChild(inputText);
+      div.appendChild(deleteButton);
+
+      inputContainer?.appendChild(div);
     }
   };
+
+  useEffect(() => {
+    if (articleState && articleEdit) {
+      addTags(articleState?.tagList.length, articleState.tagList);
+    }
+  }, []);
 
   const {
     register,
@@ -34,20 +54,22 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest }) => {
     handleSubmit,
   } = useForm<ArticleFormValues>({ mode: "onBlur" });
 
+  // checking the validity of tags
   const onSubmit = (data: ArticleFormValues) => {
-    setCount(0);
+    setInvalidTagCount(0);
     const tagsArray = [];
     const inputsArray = document.querySelectorAll("input");
     for (let i = 0; i < inputsArray.length; i++) {
       const input = inputsArray[i];
       if (i >= 2) {
         if (input.value.trim().includes(" ") || input.value.length > 20) {
-          setCount(count + 1);
+          setInvalidTagCount(invalidTagCount + 1);
         } else if (input.value.length !== 0) {
           tagsArray.push(input.value.trim());
         }
       }
     }
+
     funcRequest({ ...data, tagList: [...tagsArray] });
   };
 
@@ -65,9 +87,11 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest }) => {
               type="text"
               {...register("title", { required: "required" })}
               placeholder="Title"
+              defaultValue={articleEdit ? articleState?.title : ""}
             />
           </label>
           <div>{errors?.title && <p className={style.invalidText}>{errors.title.message}</p>}</div>
+
           {/* discription */}
           <label>
             <p className={style.inputTitle}>Short description</p>
@@ -76,9 +100,11 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest }) => {
               type="text"
               {...register("description", { required: "required" })}
               placeholder="Title"
+              defaultValue={articleEdit ? articleState?.description : ""}
             />
           </label>
           <div>{errors?.description && <p className={style.invalidText}>{errors.description.message}</p>}</div>
+
           {/* body */}
           <label>
             <p className={style.inputTitle}>Text</p>
@@ -86,13 +112,15 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest }) => {
               className={`${style.input} ${style.inputTextarea} ${errors.body ? style.redBorder : null}`}
               {...register("body", { required: "required" })}
               placeholder="Text"
+              defaultValue={articleEdit ? articleState?.body : ""}
             />
           </label>
           <div>{errors?.body && <p className={style.invalidText}>{errors.body.message}</p>}</div>
+
           {/* tags */}
           <div className={`${style.tagsContainer} inputsContainer`}>
             <p className={style.inputTitle}>Tags</p>
-            <button className={`${style.buttonTags} ${style.buttonAdd}`} type="button" onClick={() => addTagsCount()}>
+            <button className={`${style.buttonTags} ${style.buttonAdd}`} type="button" onClick={() => addTags(1)}>
               Add tag
             </button>
             <div className="templateInput">
@@ -100,13 +128,15 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest }) => {
             </div>
           </div>
 
-          {count ? (
+          {/* invalid tag warning */}
+          {invalidTagCount ? (
             <div className={style.invalidTags}>
               <p className={style.invalidText}>
                 Tags must not contain spaces or be longer than 20 characters. Fix it and send it again.
               </p>
             </div>
           ) : null}
+
           <button className={style.button} type="submit" onClick={() => handleSubmit(onSubmit)}>
             Sand
           </button>
@@ -115,5 +145,3 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest }) => {
     </div>
   );
 };
-
-export default ArticleForm;
