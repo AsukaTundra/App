@@ -3,18 +3,28 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Divider } from "antd";
 
-import { useAppSelector } from "../../hooks";
-import type { AccountFormValues, AccountFormProps } from "../../types/typesComponents";
+import { useAppSelector } from "../../hooks/hooks.ts";
 
 import style from "./accountForm.module.scss";
 
-export const AccountForm: React.FC<AccountFormProps> = ({
-  funcRequest,
-  signUp = false,
-  signIn = false,
-  editProfile = false,
-}) => {
-  const user = useAppSelector((state) => state.blog.user);
+export type AccountFormValues = {
+  username: string,
+  email: string,
+  password: string,
+  repeatPassword?: string,
+  personalInfo?: boolean,
+  image?: string,
+};
+
+type AccountFormProps = {
+  funcRequest: (form: AccountFormValues) => void,
+  signUp?: boolean,
+  signIn?: boolean,
+  editProfile?: boolean,
+};
+
+export const AccountForm: React.FC<AccountFormProps> = ({ funcRequest, signUp, signIn, editProfile }) => {
+  const userState = useAppSelector((state) => state.blog.user);
   const [repeatPass, setRepeatPass] = useState("");
 
   const {
@@ -37,8 +47,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={style.formContainer}>
-          {/* username */}
-
           {(signUp || editProfile) && (
             <>
               <label>
@@ -52,14 +60,13 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                     maxLength: { value: 20, message: "maximum 20 characters" },
                   })}
                   placeholder="Username"
-                  defaultValue={editProfile ? `${user.username}` : ""}
+                  defaultValue={editProfile ? `${userState.username}` : ""}
                 />
               </label>
               <div>{errors?.username && <p className={style.inputInvalid}>{errors.username.message}</p>}</div>
             </>
           )}
 
-          {/* email */}
           <label>
             <p className={style.inputTitle}>Email address</p>
             <input
@@ -69,12 +76,11 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                 pattern: { value: /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/, message: "invalid email" },
               })}
               placeholder="Email address"
-              defaultValue={editProfile ? `${user.email}` : ""}
+              defaultValue={editProfile ? `${userState.email}` : ""}
             />
           </label>
           <div>{errors?.email && <p className={style.inputInvalid}>{errors.email.message}</p>}</div>
 
-          {/* password/new password */}
           <label>
             <p className={style.inputTitle}>{editProfile ? "New Password" : "Password"}</p>
             <input
@@ -91,7 +97,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({
           </label>
           <div>{errors?.password && <p className={style.inputInvalid}>{errors.password.message}</p>}</div>
 
-          {/* Repeat Password */}
           {signUp && (
             <>
               <label>
@@ -109,7 +114,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({
             </>
           )}
 
-          {/* avatar image */}
           {editProfile && (
             <>
               <label>
@@ -131,7 +135,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({
           )}
         </div>
 
-        {/* antd divider */}
         {signUp && (
           <>
             <Divider className={style.divider} />
@@ -149,7 +152,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({
           </>
         )}
 
-        {/* submit button */}
         <button className={style.button} type="submit" onClick={() => handleSubmit(onSubmit)}>
           {signUp && "Create"}
           {signIn && "Login"}
@@ -157,7 +159,6 @@ export const AccountForm: React.FC<AccountFormProps> = ({
         </button>
       </form>
 
-      {/* redirect */}
       {!editProfile && (
         <>
           <p className={style.signOther}>

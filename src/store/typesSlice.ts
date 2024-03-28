@@ -34,9 +34,19 @@ export type ArticleType = {
   },
 };
 
+export type PropsGetArticles = {
+  page: number,
+  token?: string,
+};
+
 export type ReturnGetArticles = {
   articles: ArticleType[],
   articlesCount: number,
+};
+
+export type PropsGetArticle = {
+  slug: string,
+  token?: string,
 };
 
 export type ReturnGetArticle = {
@@ -50,7 +60,16 @@ export type PropsNewArticle = {
     body: string,
     tags?: string[],
   },
-  token: string,
+  token?: string,
+};
+
+export type PropsRequestNewArticle = {
+  article: {
+    title: string,
+    description: string,
+    body: string,
+    tags?: string[],
+  },
 };
 
 export type ReturnNewArticle = ReturnGetArticle;
@@ -70,8 +89,15 @@ export type PropsUpdateArticle = {
   token: string,
 };
 
-// --- аккаунт
+export type PropsRequestUpdateArticle = {
+  article: {
+    title: string,
+    description: string,
+    body: string,
+  },
+};
 
+// --- аккаунт
 export type ReturnRegisterUser = {
   user: {
     email: string,
@@ -113,4 +139,19 @@ export type PropsUpdateUser = {
     image?: string,
   },
   token: string,
+};
+
+export type PropsRequestUpdateUser = {
+  user: {
+    username: string,
+    email: string,
+    password: string,
+    image?: string,
+  },
+};
+
+export type PropsFavoritedArticle = {
+  slug: string,
+  token: string,
+  favorited: boolean,
 };

@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { useAppDispatch } from "../hooks";
-import { getUser } from "../store/blogSlice";
+import { useAppDispatch } from "../hooks/hooks.ts";
+import { getUser } from "../store/blogSlice.ts";
 import Layout from "../layout";
 import ArticleListPage from "../pages/articleListPage";
 import ArticlePage from "../pages/articlePage";

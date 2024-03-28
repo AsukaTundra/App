@@ -1,8 +1,10 @@
 import React from "react";
 
-import type { PropsErrorBlock } from "../../types/typesComponents";
-
 import style from "./errorBlock.module.scss";
+
+type PropsErrorBlock = {
+  error: string,
+};
 
 export const ErrorBlock: React.FC<PropsErrorBlock> = ({ error }) => {
   return (

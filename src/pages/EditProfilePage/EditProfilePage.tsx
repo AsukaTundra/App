@@ -1,21 +1,24 @@
 import React from "react";
 
-import type { FuncRequestForm } from "../../types/typesComponents";
-import { updateUser } from "../../store/blogSlice";
-import { useAppDispatch } from "../../hooks";
+import type { AccountFormValues } from "../../components/accountForm/accountForm.tsx";
+import { updateUser } from "../../store/blogSlice.ts";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
 import AccountForm from "../../components/accountForm";
 
 export const EditProfilePage: React.FC = () => {
+  const userState = useAppSelector((state) => state.blog.user);
   const dispatch = useAppDispatch();
 
-  const requestForm: FuncRequestForm = (form) => {
+  const requestForm: (form: AccountFormValues) => void = (form) => {
     const data = {
-      user: { username: form.username, email: form.email, password: form.password, image: form.image },
+      user: {
+        username: form.username,
+        email: form.email,
+        password: form.password,
+        image: form.image === "" && userState.image ? userState.image : form.image,
+      },
       token: document.cookie.split("=")[1],
     };
-    if (!form.image) {
-      delete form.image;
-    }
     dispatch(updateUser(data));
   };
 

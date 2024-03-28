@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-import type { FuncRequestForm } from "../../types/typesComponents";
-import { loginUser } from "../../store/blogSlice";
-import { useAppDispatch, useAppSelector, useNav } from "../../hooks";
+import type { AccountFormValues } from "../../components/accountForm/accountForm.tsx";
+import { loginUser } from "../../store/blogSlice.ts";
+import { useAppDispatch, useAppSelector, useNav } from "../../hooks/hooks.ts";
 import AccountForm from "../../components/accountForm";
 
 export const SignInPage: React.FC = () => {
@@ -10,13 +10,12 @@ export const SignInPage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const nav = useNav();
+
   useEffect(() => {
-    if (userState.token) {
-      nav("/");
-    }
+    if (userState.token) nav("/");
   }, [userState.token]);
 
-  const requestForm: FuncRequestForm = (form) => {
+  const requestForm: (form: AccountFormValues) => void = (form) => {
     dispatch(loginUser({ user: { email: form.email, password: form.password } }));
   };
 

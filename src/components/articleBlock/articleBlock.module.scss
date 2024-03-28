@@ -23,17 +23,14 @@
   }
 }
 
-.content {
+.titleContainer {
   position: relative;
-
-  .titleContainer {
-    width: 100%;
-    display: inline-block;
-    color: #1890FF;
-    font-size: 20px;
-    margin-right: 10px;
-    line-height: 24px;
-  }
+  width: 100%;
+  display: inline-block;
+  color: #1890FF;
+  font-size: 20px;
+  margin-right: 10px;
+  line-height: 24px;
 
   .like {
     margin-left: 5px;
@@ -41,10 +38,14 @@
     display: inline-block;
     font-size: 14px;
     line-height: 20px;
-    background-image: url(../../assets/img/heart.svg);
+    background-image: url(../../assets/img/likeOff.svg);
     background-repeat: no-repeat;
     background-size: 60%;
     background-position: 10% 10%;
+  }
+
+  .onLike {
+    background-image: url(../../assets/img/likeOn.svg);
   }
   
   .tag {

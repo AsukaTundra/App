@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import type { ArticleFormProps, ArticleFormValues } from "../../types/typesComponents";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from "../../hooks/hooks.ts";
 
 import style from "./articleForm.module.scss";
 
-export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEdit }) => {
+export type ArticleFormValues = {
+  title: string,
+  description: string,
+  body: string,
+  tagList: string[],
+};
+
+type ArticleFormProps = {
+  funcRequest: (data: ArticleFormValues) => void,
+  editing?: boolean,
+};
+
+export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, editing }) => {
   const articleState = useAppSelector((state) => state.blog.articles.article);
   const [invalidTagCount, setInvalidTagCount] = useState(0);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const deleteTags: (event: any) => void = (event) => {
-    console.log(2);
-    const parentDiv = event.target.parentElement;
-    parentDiv.remove();
+  const deleteTags: (event: MouseEvent) => void = (event) => {
+    const target = event.target as HTMLElement;
+    const parentDiv = target.parentElement;
+    if (parentDiv) parentDiv.remove();
   };
 
-  console.log(1);
-  // creating new tags input
   const addTags = (cycle: number, arrayValues?: string[]) => {
     const inputContainer = document.querySelector(".inputsContainer");
     for (let i = 0; i < cycle; i++) {
@@ -43,10 +51,10 @@ export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEd
   };
 
   useEffect(() => {
-    if (articleState && articleEdit) {
+    if (articleState && editing) {
       addTags(articleState?.tagList.length, articleState.tagList);
     }
-  }, []);
+  }, [articleState]);
 
   const {
     register,
@@ -54,7 +62,6 @@ export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEd
     handleSubmit,
   } = useForm<ArticleFormValues>({ mode: "onBlur" });
 
-  // checking the validity of tags
   const onSubmit = (data: ArticleFormValues) => {
     setInvalidTagCount(0);
     const tagsArray = [];
@@ -69,7 +76,6 @@ export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEd
         }
       }
     }
-
     funcRequest({ ...data, tagList: [...tagsArray] });
   };
 
@@ -79,7 +85,6 @@ export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEd
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={style.formContainer}>
-          {/* title */}
           <label>
             <p className={style.inputTitle}>Title</p>
             <input
@@ -87,12 +92,11 @@ export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEd
               type="text"
               {...register("title", { required: "required" })}
               placeholder="Title"
-              defaultValue={articleEdit ? articleState?.title : ""}
+              defaultValue={editing ? articleState?.title : ""}
             />
           </label>
           <div>{errors?.title && <p className={style.invalidText}>{errors.title.message}</p>}</div>
 
-          {/* discription */}
           <label>
             <p className={style.inputTitle}>Short description</p>
             <input
@@ -100,24 +104,22 @@ export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEd
               type="text"
               {...register("description", { required: "required" })}
               placeholder="Title"
-              defaultValue={articleEdit ? articleState?.description : ""}
+              defaultValue={editing ? articleState?.description : ""}
             />
           </label>
           <div>{errors?.description && <p className={style.invalidText}>{errors.description.message}</p>}</div>
 
-          {/* body */}
           <label>
             <p className={style.inputTitle}>Text</p>
             <textarea
               className={`${style.input} ${style.inputTextarea} ${errors.body ? style.redBorder : null}`}
               {...register("body", { required: "required" })}
               placeholder="Text"
-              defaultValue={articleEdit ? articleState?.body : ""}
+              defaultValue={editing ? articleState?.body : ""}
             />
           </label>
           <div>{errors?.body && <p className={style.invalidText}>{errors.body.message}</p>}</div>
 
-          {/* tags */}
           <div className={`${style.tagsContainer} inputsContainer`}>
             <p className={style.inputTitle}>Tags</p>
             <button className={`${style.buttonTags} ${style.buttonAdd}`} type="button" onClick={() => addTags(1)}>
@@ -128,12 +130,9 @@ export const ArticleForm: React.FC<ArticleFormProps> = ({ funcRequest, articleEd
             </div>
           </div>
 
-          {/* invalid tag warning */}
           {invalidTagCount ? (
             <div className={style.invalidTags}>
-              <p className={style.invalidText}>
-                Tags must not contain spaces or be longer than 20 characters. Fix it and send it again.
-              </p>
+              <p className={style.invalidText}>Tags must not contain spaces or be longer than 20 characters. Fix it and send it again.</p>
             </div>
           ) : null}
 
