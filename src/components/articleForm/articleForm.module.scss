@@ -1,15 +1,17 @@
+@import "../../app/app.scss";
+
 .articleForm {
   margin: 40px auto 40px auto;
   padding: 40px;
   width: 1000px;
-  background-color: white;
+  background-color: $white-color;
   font-family: "Inter UI";
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 20px 0px;
+  box-shadow: $shadow-color;
 
   .title {
     margin-top: 20px;
     text-align: center;
-    font-size: 20px;
+    font-size: $big-size;
     font-weight: 500;
   }
 }
@@ -20,7 +22,7 @@
 
   .inputTitle {
     margin-top: 15px;
-    font-size: 14px;
+    font-size: $mini-size;
   }
 
   .input {
@@ -40,12 +42,12 @@
   }
 
   .invalidText {
-    font-size: 14px;
-    color: red;   
+    font-size: $mini-size;
+    color: $error-color;   
   }
 
   .redBorder {
-    border-color: red;
+    border-color: $error-color;
   }
 
   .invalidTags {
@@ -62,25 +64,25 @@
   .buttonTags {
     margin: 15px 0 0 10px;
     padding: 7px;
-    color: #F5222D;
-    border: 1px solid #F5222D;
+    color: $error-color;
+    border: 1px solid $error-color;
     border-radius: 3px;
 
     &:hover {
-      color: white;
-      background-color: #F5222D;
+      color: $white-color;
+      background-color: $error-color;
     }
 
     &.buttonAdd {
       position: absolute;
       left: 404px;
       bottom: 0px;
-      color: #1890FF;
-      border-color: #1890FF;
+      color: $info-color;
+      border-color: $info-color;
 
       &:hover {
-        color: white;
-        background-color: #1890FF;
+        color: $white-color;
+        background-color: $info-color;
       }
     }
   }
@@ -95,13 +97,13 @@
   width: 300px;
   height: 35px;
   text-align: center;
-  color: white;
-  background-color: #0b76ef;
+  color: $white-color;
+  background-color: $info-color;
   border-radius: 5px;
 
   &:hover {
-    border: 1px solid #0b76ef;
-    background-color: white;
-    color: #0b76ef;
+    border: 1px solid $info-color;
+    background-color: $white-color;
+    color: $info-color;
   }
 }

@@ -14,6 +14,7 @@ import ArticleEditPage from "../pages/articleEditPage";
 import NotFoundPage from "../pages/notFoundPage";
 
 import "../assets/fonts/index.css";
+import "./app.scss";
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
