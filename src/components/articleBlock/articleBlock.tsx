@@ -38,12 +38,14 @@ export const ArticleBlock: React.FC<ArticleBlockProps> = ({ item, body, slug }) 
   const debounce = () => {
     let qwe: NodeJS.Timeout | undefined;
     return () => {
-      clearTimeout(qwe);
-      qwe = setTimeout(() => {
-        dispatch(favoritedArticle({ ...data, favorited: item.favorited }));
-        setLikeCount(!like ? likeCount + 1 : likeCount - 1);
-        setLike(!like);
-      }, 600);
+      if (appState.user.token) {
+        clearTimeout(qwe);
+        qwe = setTimeout(() => {
+          dispatch(favoritedArticle({ ...data, favorited: item.favorited }));
+          setLikeCount(!like ? likeCount + 1 : likeCount - 1);
+          setLike(!like);
+        }, 600);
+      }
     };
   };
 
